@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>Your Quiz History</h2>
+
+  <p><strong>Personal Best:</strong> {{ best_score }} out of 5</p>
+  <p><strong>Best Percentage:</strong> {{ best_percent }}%</p>
+  <p><strong>Average Percentage:</strong> {{ avg_percent }}%</p>
+
+  <hr>
+
+  {% if attempts %}
+    <canvas id="quizChart" width="600" height="300"></canvas>
+    <br><br>
+
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>Date</th>
+        <th>Score</th>
+        <th>Total</th>
+        <th>Percentage</th>
+      </tr>
+      {% for a in attempts %}
+      <tr>
+        <td>{{ a.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+        <td>{{ a.score }}</td>
+        <td>{{ a.total }}</td>
+        <td>{{ a.percent }}%</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>You have not taken any quizzes yet.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('dashboard') }}">Back to Dashboard</a></p>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('quizChart').getContext('2d');
+    const quizChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [
+          {% for a in attempts %}
+            "{{ a.timestamp.strftime('%Y-%m-%d') }}",
+          {% endfor %}
+        ],
+        datasets: [{
+          label: 'Quiz Score',
+          data: [
+            {% for a in attempts %}
+              {{ a.score }},
+            {% endfor %}
+          ],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.3
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 5
+          }
+        }
+      }
+    });
+  </script>
+{% endblock %}

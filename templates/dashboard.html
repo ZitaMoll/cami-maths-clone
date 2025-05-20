@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>Welcome, {{ user.username }}!</h2>
+
+  <p>Your email: {{ user.email }}</p>
+  <p>Your current score: {{ user.score }}</p>
+
+  <p>
+    <a href="{{ url_for('practice') }}">Start Practising Maths</a>
+  </p>
+
+  <p>
+    <a href="{{ url_for('leaderboard') }}">View Leaderboard</a>
+  </p>
+
+  <form method="POST" action="{{ url_for('reset_score') }}">
+    <button type="submit">Reset My Score</button>
+  </form>
+
+  <p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+  </p>
+{% endblock %}

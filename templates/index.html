@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h1>Welcome to Cami Maths!</h1>
+  <p>This is a simple maths practice app with login, dashboard, and score tracking.</p>
+
+  {% if not current_user.is_authenticated %}
+    <p>
+      <a href="{{ url_for('register') }}">Register</a> or
+      <a href="{{ url_for('login') }}">Login</a> to get started.
+    </p>
+  {% else %}
+    <p>Go to your <a href="{{ url_for('dashboard') }}">Dashboard</a>.</p>
+  {% endif %}
+{% endblock %}

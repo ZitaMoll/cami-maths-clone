@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>Math Practice (Timed)</h2>
+
+  <form method="POST" id="practice-form">
+    <label><strong>Choose difficulty:</strong></label>
+    <select name="difficulty" onchange="this.form.submit()">
+      <option value="easy" {% if selected_difficulty == 'easy' %}selected{% endif %}>Easy</option>
+      <option value="medium" {% if selected_difficulty == 'medium' %}selected{% endif %}>Medium</option>
+      <option value="hard" {% if selected_difficulty == 'hard' %}selected{% endif %}>Hard</option>
+    </select>
+
+    <br><br>
+    <p><strong>Solve:</strong> {{ question }}</p>
+    <input type="hidden" name="question" value="{{ question }}">
+    <input type="hidden" name="difficulty" value="{{ selected_difficulty }}">
+    <input type="text" name="answer" placeholder="Your answer" required>
+    <button type="submit" id="submit-btn">Submit</button>
+  </form>
+
+  {% if result %}
+    <p><strong>{{ result }}</strong></p>
+  {% endif %}
+
+  <p><strong>Time left:</strong> <span id="timer">20</span> seconds</p>
+
+  <p>Your score: {{ user.score }}</p>
+  <p><a href="{{ url_for('dashboard') }}">Back to dashboard</a></p>
+
+  <script>
+    let timeLeft = 20;
+    const timer = document.getElementById('timer');
+    const form = document.getElementById('practice-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    const countdown = setInterval(() => {
+      timeLeft--;
+      timer.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        submitBtn.disabled = true;
+        alert("⏰ Time's up! Moving to the next question.");
+        form.submit();
+      }
+    }, 1000);
+  </script>
+{% endblock %}
