@@ -2,8 +2,7 @@ services:
   - type: web
     name: cami-maths-clone
     env: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python app.py"
-    envVars:
-      - key: FLASK_ENV
-        value: production
+    buildCommand: pip install -r requirements.txt
+    startCommand: >
+      python create_db.py &&
+      python app.py
