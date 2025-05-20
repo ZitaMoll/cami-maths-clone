@@ -313,8 +313,6 @@ def admin_stats():
                            logins_today=logins_today,
                            total_quiz_attempts=total_quiz_attempts)
 
-# Existing admin routes: /admin, delete_user, reset_user, download_users
-# (they remain unchanged and can be appended below if needed)
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
